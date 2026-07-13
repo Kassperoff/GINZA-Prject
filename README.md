@@ -1,1 +1,1 @@
-# GINZA-Prject
+# GINZA-BASE
