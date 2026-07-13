@@ -1,0 +1,40 @@
+log_msg() {
+    local who="$1"      # кто пишет
+    local type="$2"     # тип лога (символ)
+    local mode="$3"     # режим вывода: term/file/both
+    shift 3
+    local text="$*"     # текст лога
+
+    # Цвета по типу
+    case "$type" in
+        "❗"|"⚠"|"!" )
+            color="\e[33m" ;;   # предупреждение
+        "❌"|"✖" )
+            color="\e[31m" ;;   # ошибка
+        "✅"|"✔" )
+            color="\e[32m" ;;   # успех
+        "⚙"|"*" )
+            color="\e[36m" ;;   # процесс
+        "📷" )
+            color="\e[35m" ;;   # медиа
+        * )
+            color="\e[37m" ;;   # обычный
+    esac
+
+    # Дата/время
+    local dt
+    dt="$(date '+%Y-%m-%d %H:%M:%S')"
+
+    # Формат сообщения
+    local formatted="${type} [${dt}] (${who}) ${text}"
+
+    # Вывод в терминал
+    if [[ "$mode" == "term" || "$mode" == "both" ]]; then
+        echo -e "${color}${formatted}\e[0m"
+    fi
+
+    # Вывод в файл
+    if [[ "$mode" == "file" || "$mode" == "both" ]]; then
+        echo "${formatted}" >> "$LOGFILE"
+    fi
+}
