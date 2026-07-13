@@ -1,0 +1,12 @@
+choose_option() {
+    options=("start" "stop" "restart" "status")
+    echo "Выберите действие:"
+    select opt in "${options[@]}"; do
+        if [[ -n "$opt" ]]; then
+            echo "Вы выбрали: $opt"
+            break
+        else
+            echo "Неверный выбор."
+        fi
+    done
+}
